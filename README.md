@@ -2,7 +2,7 @@
 
 A Book Catalog Website.
 
-Built using [Node v16](https://nodejs.org/). `script.js` is a node function that parses the CSV and returns the html.
+Built using [Node v16](https://nodejs.org/). `script.js` is a node function that parses the CSV and returns the html. To generate the data I export my library from [goodreads](https://www.goodreads.com/review/import) and convert the `.csv` to `.json` using a website.
 
 ### Development
 
