@@ -4,7 +4,7 @@
   "description": "A Book Catalog for Romello Goodman.",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon --watch server.js",
+    "dev": "nodemon --watch script.js server.js",
     "start": "node script",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
