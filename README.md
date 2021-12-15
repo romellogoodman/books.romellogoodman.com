@@ -2,8 +2,12 @@
 
 A Book Catalog Website.
 
-Built using [Node v16](https://nodejs.org/). `script.js` builds `index.html`.
+Built using [Node v16](https://nodejs.org/). `script.js` is a node function that parses the CSV and returns the html.
 
 ```
-node script.js
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
 ```

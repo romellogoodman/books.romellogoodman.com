@@ -2,10 +2,14 @@
   "name": "books.romellogoodman.com",
   "version": "1.0.0",
   "description": "A Book Catalog for Romello Goodman.",
-  "main": "script.js",
+  "main": "server.js",
   "scripts": {
+    "dev": "nodemon --watch server.js",
     "start": "node script",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Romello Goodman"
+  "author": "Romello Goodman",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }

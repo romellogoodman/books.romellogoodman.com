@@ -1,17 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+const handler = (req, res) => {
+  console.log("its handled");
 
-console.log("lets build books.romellogoodman.com");
+  res.writeHead(200, { "Content-Type": "text/html" });
+  res.write("<html><body><p>hello world.</p></body></html>");
+  res.end();
+};
 
-const content = "Some content!";
-
-const filePath = path.join(process.cwd(), "index.txt");
-
-fs.writeFile(filePath, content, (err) => {
-  if (err) {
-    console.log("Error while writting index.html");
-    console.error(err);
-    return;
-  }
-  console.log("Success. File saved to: " + filePath);
-});
+module.exports = handler;

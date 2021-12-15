@@ -1,10 +1,6 @@
 const http = require("http");
-
-const server = http.createServer(function (req, res) {
-  res.writeHead(200, { "Content-Type": "text/html" });
-  res.write("<html><body><p>hello world.</p></body></html>");
-  res.end();
-});
+const handler = require("./script");
+const server = http.createServer(handler);
 
 server.listen(3000);
 
