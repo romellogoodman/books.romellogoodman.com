@@ -1,0 +1,11 @@
+{
+  "name": "books.romellogoodman.com",
+  "version": "1.0.0",
+  "description": "A Book Catalog for Romello Goodman.",
+  "main": "script.js",
+  "scripts": {
+    "start": "node script",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Romello Goodman"
+}
