@@ -178,17 +178,21 @@ const getHTML = async (groups) => {
         </header>
         <body>
             <main>
+            <div>
               <div>
-                Group By:
-                <a href="/?group=${GROUP_AUTHOR}">
-                  <span>Author</span>
-                </a>
-                <a href="/?group=${GROUP_TITLE}">
-                  <span>Title</span>
-                </a>
-                <a href="/?group=${GROUP_YEAR}">
-                  <span>Year</span>
-                </a>
+                <p>Last Update: 12-21-2021</p>
+                <p>
+                  Group By:
+                  <a href="/?group=${GROUP_AUTHOR}">
+                    <span>Author</span>
+                  </a>
+                  <a href="/?group=${GROUP_TITLE}">
+                    <span>Title</span>
+                  </a>
+                  <a href="/?group=${GROUP_YEAR}">
+                    <span>Year</span>
+                  </a>
+                </p>
               </div>
                 ${books}
             </main>
