@@ -1,23 +1,68 @@
 const goodreads = require("./goodreads.json");
 
-const getRecords = async (query) => {
-  console.log("query:", query);
+const GROUP_AUTHOR = "author";
+const GROUP_TITLE = "title";
+const GROUP_YEAR = "year";
 
-  const { group } = query || {};
-  const records = goodreads
-    .map((item) => {
-      return item.Title;
-    })
-    .filter((item) => item)
-    .sort();
-
-  return records;
+const filterRecords = (records) => {
+  return records.filter((record) => record["Exclusive Shelf"] === "read");
 };
 
-const getHTML = async (records) => {
-  const books = (records || [])
-    .map((title) => {
-      return `<p>${title}</p>`;
+const groupRecords = (records, key = "title") => {
+  const groupBys = {
+    [GROUP_AUTHOR]: {
+      recordKey: "Author",
+      groupBy: (value) => value,
+    },
+    [GROUP_YEAR]: {
+      recordKey: "Date Read",
+      groupBy: (value) => value.slice(0, value.indexOf("/")) || "Year Unknown",
+    },
+    [GROUP_TITLE]: {
+      recordKey: "Title",
+      groupBy: (value) => value.charAt(0),
+    },
+  };
+  const { recordKey, groupBy } = groupBys[key];
+  const groups = records.reduce((dictionary, item) => {
+    const groupValue = item[recordKey];
+    const groupKey = groupBy(groupValue);
+
+    // Group initialization
+    if (!dictionary[groupKey]) {
+      dictionary[groupKey] = [];
+    }
+
+    // Grouping
+    dictionary[groupKey].push(item);
+
+    return dictionary;
+  }, {});
+
+  return groups;
+};
+
+const getHTML = async (groups) => {
+  const keys = Object.keys(groups || {}).sort();
+  const books = keys
+    .map((key) => {
+      const items = (groups[key] || []).sort((a, b) => {
+        return a.Title > b.Title ? 1 : -1;
+      });
+
+      return `
+        <div>
+          <h6>${key}</h6>
+          ${items
+            .map((item) => {
+              const { Title: title } = item;
+              return `
+              <p>${title}</p>
+            `;
+            })
+            .join("\n")}
+        </div>
+      `;
     })
     .join("\n");
 
@@ -133,6 +178,18 @@ const getHTML = async (records) => {
         </header>
         <body>
             <main>
+              <div>
+                Group By:
+                <a href="/?group=${GROUP_AUTHOR}">
+                  <span>Author</span>
+                </a>
+                <a href="/?group=${GROUP_TITLE}">
+                  <span>Title</span>
+                </a>
+                <a href="/?group=${GROUP_YEAR}">
+                  <span>Year</span>
+                </a>
+              </div>
                 ${books}
             </main>
         </body>
@@ -144,9 +201,26 @@ const getHTML = async (records) => {
     `;
 };
 
+const getQueryParams = (url) => {
+  // url -> ?key=param -> key=param
+  const query = url.substr(1);
+  const result = {};
+
+  query.split("&").forEach((part) => {
+    const item = part.split("=");
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+
+  return result;
+};
+
 const handler = async (req, res) => {
-  const records = await getRecords(req.query || {});
-  const html = await getHTML(records);
+  // req.url -> /?key=param -> ?key=param
+  const query = getQueryParams(req.url.slice(1) || "");
+  const { group = "title" } = query;
+  const records = filterRecords(goodreads);
+  const groups = groupRecords(records, group);
+  const html = await getHTML(groups);
 
   res.writeHead(200, { "Content-Type": "text/html" });
   res.write(html);
